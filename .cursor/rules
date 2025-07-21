@@ -1,0 +1,4 @@
+Always use pnpm.
+do not use API routes, never create API routes in Next.js
+do not use Prisma
+everything regarding our backend is hosted by express api backend so you can use use server calls where it is needed
