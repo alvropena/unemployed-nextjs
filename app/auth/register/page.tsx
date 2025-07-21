@@ -3,35 +3,35 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
     const { signUp } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
-        setSuccess('');
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            toast.error('Passwords do not match');
             setLoading(false);
             return;
         }
 
         try {
             await signUp(email, password);
-            setSuccess('Registration successful! Please check your email to verify your account.');
+            toast.success('Registration successful! Please check your email to verify your account.');
             // Don't redirect immediately, let user see success message
         } catch (err: unknown) {
             const errorMessage = err instanceof Error ? err.message : 'Failed to sign up';
-            setError(errorMessage);
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -50,24 +50,12 @@ export default function RegisterPage() {
                         </p>
                     </div>
 
-                    {error && (
-                        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-                            {error}
-                        </div>
-                    )}
-
-                    {success && (
-                        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                            {success}
-                        </div>
-                    )}
-
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <Label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Email
-                            </label>
-                            <input
+                            </Label>
+                            <Input
                                 type="email"
                                 id="email"
                                 value={email}
@@ -79,10 +67,10 @@ export default function RegisterPage() {
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <Label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Password
-                            </label>
-                            <input
+                            </Label>
+                            <Input
                                 type="password"
                                 id="password"
                                 value={password}
@@ -95,10 +83,10 @@ export default function RegisterPage() {
                         </div>
 
                         <div>
-                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <Label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Confirm Password
-                            </label>
-                            <input
+                            </Label>
+                            <Input
                                 type="password"
                                 id="confirmPassword"
                                 value={confirmPassword}
@@ -110,13 +98,13 @@ export default function RegisterPage() {
                             />
                         </div>
 
-                        <button
+                        <Button
                             type="submit"
                             disabled={loading}
                             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-lg transition duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
                             {loading ? 'Creating account...' : 'Sign Up'}
-                        </button>
+                        </Button>
                     </form>
 
                     <div className="mt-6 text-center">

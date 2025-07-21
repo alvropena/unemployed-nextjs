@@ -7,26 +7,26 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const router = useRouter();
     const { signIn } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
 
         try {
             await signIn(email, password);
-            router.push('/profile');
+            toast.success('Successfully signed in!');
+            router.push('/');
         } catch (err: unknown) {
             const errorMessage = err instanceof Error ? err.message : 'Failed to sign in';
-            setError(errorMessage);
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -44,12 +44,6 @@ export default function LoginPage() {
                             Welcome back! Please sign in to your account
                         </p>
                     </div>
-
-                    {error && (
-                        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-                            {error}
-                        </div>
-                    )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
