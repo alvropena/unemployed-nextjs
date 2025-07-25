@@ -1,98 +1,49 @@
-'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import { login } from '@/app/actions/auth';
 
 export default function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const router = useRouter();
-    const { signIn } = useAuth();
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-
-        try {
-            await signIn(email, password);
-            toast.success('Successfully signed in!');
-            router.push('/');
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to sign in';
-            toast.error(errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-            <div className="max-w-md w-full mx-4">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                            Sign In
-                        </h1>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            Welcome back! Please sign in to your account
-                        </p>
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="w-full max-w-md border border-gray-300 p-8">
+                <div className="text-center mb-6">
+                    <h1 className="text-2xl font-bold">Sign In</h1>
+                </div>
+
+                <form action={login} className="w-full">
+                    <div className="w-full mb-4">
+                        <Label htmlFor="email" className="w-full">Email</Label>
+                        <Input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            className="w-full"
+                        />
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <Label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Email
-                            </Label>
-                            <Input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Enter your email..."
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Password
-                            </Label>
-                            <Input
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Enter your password..."
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                                required
-                            />
-                        </div>
-
-                        <Button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-lg transition duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                        >
-                            {loading ? 'Signing in...' : 'Sign In'}
-                        </Button>
-                    </form>
-
-                    <div className="mt-6 text-center">
-                        <p className="text-gray-600 dark:text-gray-300">
-                            Don&apos;t have an account?{' '}
-                            <Link href="/auth/register" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-                                Sign up
-                            </Link>
-                        </p>
+                    <div className="w-full mb-6">
+                        <Label htmlFor="password" className="w-full">Password</Label>
+                        <Input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            className="w-full"
+                        />
                     </div>
+
+                    <div className="w-full mb-4">
+                        <Button type="submit" className="w-full">Sign In</Button>
+                    </div>
+                </form>
+
+                <div className="text-center">
+                    <p>
+                        Don&apos;t have an account? <Link href="/register" className="text-blue-600 hover:text-blue-800">Sign up</Link>
+                    </p>
                 </div>
             </div>
         </div>
