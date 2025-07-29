@@ -9,7 +9,7 @@ export default function LoginPage() {
         <div className="min-h-screen flex items-center justify-center">
             <div className="w-full max-w-md border border-gray-300 p-8">
                 <div className="text-center mb-6">
-                    <h1 className="text-2xl font-bold">Sign In</h1>
+                    <h1 className="text-2xl font-bold">Log In</h1>
                 </div>
 
                 <form action={login} className="w-full">
@@ -36,13 +36,13 @@ export default function LoginPage() {
                     </div>
 
                     <div className="w-full mb-4">
-                        <Button type="submit" className="w-full">Sign In</Button>
+                        <Button type="submit" className="w-full">Log In</Button>
                     </div>
                 </form>
 
                 <div className="text-center">
                     <p>
-                        Don&apos;t have an account? <Link href="/register" className="text-blue-600 hover:text-blue-800">Sign up</Link>
+                        Don&apos;t have an account? <Link href="/register" className="text-blue-600 hover:text-blue-800">Sign Up</Link>
                     </p>
                 </div>
             </div>

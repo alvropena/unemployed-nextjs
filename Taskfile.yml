@@ -1,0 +1,11 @@
+version: 3
+
+tasks:
+  run:
+    cmd: "pnpm run dev"
+  build:
+    cmd: "pnpm run build"
+  start:
+    cmd: "pnpm run start"
+  lint:
+    cmd: "pnpm run lint"
