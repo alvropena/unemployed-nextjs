@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
+import { updateUserProfile } from '@/lib/api'
 
 interface OnboardingData {
     name: string
@@ -43,9 +44,36 @@ export default function OnboardingPage() {
 
     const handleSubmit = async () => {
         setIsLoading(true)
-        // TODO: Save onboarding data to database
-        console.log('Onboarding data:', formData)
-        setIsLoading(false)
+        try {
+            // TODO: Get actual user ID from auth context or session
+            const userId = 'current-user-id' // Replace with actual user ID
+            
+            // Validate all required fields before submitting
+            if (!formData.name.trim() || !formData.username.trim()) {
+                throw new Error('Please fill in all required fields')
+            }
+            
+            const result = await updateUserProfile(userId, {
+                name: formData.name.trim(),
+                username: formData.username.trim()
+            })
+            
+            if (result.success) {
+                console.log('Profile updated successfully:', result.data)
+                // TODO: Redirect to dashboard or show success message
+                // router.push('/dashboard')
+            } else {
+                console.error('Failed to update profile:', result.message)
+                // TODO: Show error message to user
+                // toast.error(result.message || 'Failed to update profile')
+            }
+        } catch (error) {
+            console.error('Error during profile update:', error)
+            // TODO: Show error message to user
+            // toast.error(error instanceof Error ? error.message : 'An error occurred')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const renderStep = () => {
