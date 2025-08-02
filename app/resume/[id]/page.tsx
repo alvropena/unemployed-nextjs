@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { redirect } from 'next/navigation'
-import { ArrowLeft, Edit, Download, Share } from 'lucide-react'
+import { Edit, Download, Upload } from 'lucide-react'
 import Link from 'next/link'
 
 import { createClient } from '@/lib/supabase/client'
@@ -104,7 +104,6 @@ export default function ResumeDetailPage({ params }: { params: { id: string } })
           <p className="text-muted-foreground">The resume you're looking for doesn't exist.</p>
           <Link href="/home">
             <Button>
-              <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Resumes
             </Button>
           </Link>
@@ -120,12 +119,6 @@ export default function ResumeDetailPage({ params }: { params: { id: string } })
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link href="/home">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-              </Link>
               <div>
                 <h1 className="text-xl font-semibold">{resume.title}</h1>
                 <p className="text-sm text-muted-foreground">
@@ -140,7 +133,7 @@ export default function ResumeDetailPage({ params }: { params: { id: string } })
                   ? 'bg-green-100 text-green-800' 
                   : 'bg-yellow-100 text-yellow-800'
               }`}>
-                {resume.status}
+                {resume.status === 'draft' ? 'Draft' : resume.status}
               </span>
               <Button variant="outline" size="sm">
                 <Edit className="h-4 w-4 mr-2" />
@@ -151,8 +144,8 @@ export default function ResumeDetailPage({ params }: { params: { id: string } })
                 Download
               </Button>
               <Button variant="outline" size="sm">
-                <Share className="h-4 w-4 mr-2" />
-                Share
+                <Upload className="h-4 w-4 mr-2" />
+                Publish
               </Button>
             </div>
           </div>
